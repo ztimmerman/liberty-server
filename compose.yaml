@@ -1,3 +1,4 @@
+version: '3'
 services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -40,3 +41,4 @@ services:
       - WIREGUARD_ADDRESSES=${GLUETUN_AIRVPN_ADDRESSES}
       - SERVER_COUNTRIES=Switzerland
       - UPDATER_PERIOD=24h
+    restart: unless-stopped
