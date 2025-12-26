@@ -9,8 +9,8 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /path/to/qbittorrent/appdata:/config
-      - /path/to/downloads:/downloads #optional
+      - ./config/qbittorrent:/config
+      - ${LIBERTY_TORRENT_FILEDIR}:/downloads
     ports:
       - 8080:8080
       - 6881:6881
@@ -30,7 +30,7 @@ services:
       - 8388:8388/tcp # Shadowsocks
       - 8388:8388/udp # Shadowsocks
     volumes:
-      - /yourpath:/gluetun
+      - ./config/gluetun:/gluetun
     environment:
       # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
       - VPN_SERVICE_PROVIDER=ivpn
