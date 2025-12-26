@@ -10,14 +10,13 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - ./config/qbittorrent:/config
+      #Map your preferred file directory on your host machine
       - ${LIBERTY_TORRENT_FILEDIR}:/downloads
     network_mode: "service:gluetun"
     restart: unless-stopped
   gluetun:
     image: qmcgaw/gluetun
     # container_name: gluetun
-    # line above must be uncommented to allow external containers to connect.
-    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
     cap_add:
       - NET_ADMIN
     devices:
@@ -26,13 +25,18 @@ services:
       - 8888:8888/tcp # HTTP proxy
       - 8388:8388/tcp # Shadowsocks
       - 8388:8388/udp # Shadowsocks
+      #Web UI for qBittorrent, must be exposed so it can be accessed
       - 8088:8088
     volumes:
       - ./config/gluetun:/gluetun
     environment:
+      #set up for AirVPN by default, configure for your preferred VPN solution
       - VPN_SERVICE_PROVIDER=airvpn
       - VPN_TYPE=wireguard
       - WIREGUARD_PRIVATE_KEY=${GLUETUN_AIRVPN_PRIVATE_KEY}
       - WIREGUARD_PRESHARED_KEY=${GLUETUN_AIRVPN_PRESHARED_KEY}
+      #Range of addresses for Wireguard to connect to
+      #Set up for AirVPN by default
       - WIREGUARD_ADDRESSES=${GLUETUN_AIRVPN_ADDRESSES}
       - SERVER_COUNTRIES=Switzerland
+      - UPDATER_PERIOD=24h
