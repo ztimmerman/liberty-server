@@ -6,15 +6,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=8088
       - TORRENTING_PORT=6881
     volumes:
       - ./config/qbittorrent:/config
       - ${LIBERTY_TORRENT_FILEDIR}:/downloads
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
+    network_mode: "service:gluetun"
     restart: unless-stopped
   gluetun:
     image: qmcgaw/gluetun
@@ -29,20 +26,15 @@ services:
       - 8888:8888/tcp # HTTP proxy
       - 8388:8388/tcp # Shadowsocks
       - 8388:8388/udp # Shadowsocks
+      - 8088:8088
+      - 6881:6881
+      - 6881:6881/udp
     volumes:
       - ./config/gluetun:/gluetun
     environment:
-      # See https://github.com/qdm12/gluetun-wiki/tree/main/setup#setup
-      - VPN_SERVICE_PROVIDER=ivpn
-      - VPN_TYPE=openvpn
-      # OpenVPN:
-      - OPENVPN_USER=
-      - OPENVPN_PASSWORD=
-      # Wireguard:
-      # - WIREGUARD_PRIVATE_KEY=wOEI9rqqbDwnN8/Bpp22sVz48T71vJ4fYmFWujulwUU=
-      # - WIREGUARD_ADDRESSES=10.64.222.21/32
-      # Timezone for accurate log times
-      - TZ=
-      # Server list updater
-      # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/servers.md#update-the-vpn-servers-list
-      - UPDATER_PERIOD=
+      - VPN_SERVICE_PROVIDER=airvpn
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${GLUETUN_AIRVPN_PRIVATE_KEY}
+      - WIREGUARD_PRESHARED_KEY=${GLUETUN_AIRVPN_PRESHARED_KEY}
+      - WIREGUARD_ADDRESSES=${GLUETUN_AIRVPN_ADDRESSES}
+      - SERVER_COUNTRIES=Switzerland
