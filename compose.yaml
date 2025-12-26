@@ -27,8 +27,6 @@ services:
       - 8388:8388/tcp # Shadowsocks
       - 8388:8388/udp # Shadowsocks
       - 8088:8088
-      - 6881:6881
-      - 6881:6881/udp
     volumes:
       - ./config/gluetun:/gluetun
     environment:
