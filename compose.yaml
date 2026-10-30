@@ -41,4 +41,7 @@ services:
       - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
       - UPDATER_PERIOD=24h
       - DNS_SERVER=on
+      # tracker.bakabt.me resolves into 193.46.255.0/24, which the malicious IP list blocks.
+      # Hostname exemptions do not bypass that IP-prefix block.
+      - BLOCK_MALICIOUS=off
     restart: unless-stopped
