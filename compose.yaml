@@ -40,4 +40,5 @@ services:
       - WIREGUARD_ADDRESSES=${GLUETUN_AIRVPN_ADDRESSES}
       - SERVER_COUNTRIES=${GLUETUN_SERVER_COUNTRIES}
       - UPDATER_PERIOD=24h
+      - DNS_SERVER=on
     restart: unless-stopped
